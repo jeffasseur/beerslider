@@ -1,6 +1,6 @@
 export class BeerSlider {
 
-    constructor (element, {start = '50', prefix = 'beer'} = {}) {
+    constructor (element, {start = '50', prefix = 'beer', minValue = '0', maxValue = '100'} = {}) {
         this.start = parseInt(start) ? Math.min(100, Math.max(0, parseInt(start))) : 50
         this.prefix = prefix
         if (!element || element.children.length !== 2) {
@@ -16,12 +16,12 @@ export class BeerSlider {
             type: 'range',
             class: `${this.prefix}-range`,
             'aria-label': 'Percent of revealed content',
-            'aria-valuemin': '0',
-            'aria-valuemax': '100',
+            'aria-valuemin': `${minValue}`,
+            'aria-valuemax': `${maxValue}`,
             'aria-valuenow': this.start,
             value: this.start,
-            min: '0',
-            max: '100'
+            min: `${minValue}`,
+            max: `${maxValue}`
         })
         this.handle = this.addElement('span', {
             class: `${this.prefix}-handle`
@@ -54,7 +54,7 @@ export class BeerSlider {
         if ( !this.revealElement ) {
             return
         }
-        this.loadedBoth().then( 
+        this.loadedBoth().then(
             () => {
                 this.init()
             },
@@ -62,7 +62,7 @@ export class BeerSlider {
                 console.error('Some errors occurred and images are not loaded.')
             }
         )
-    } 
+    }
     addElement (tag, attributes) {
         const el = document.createElement(tag)
         Object.keys(attributes).forEach( (key) => {
